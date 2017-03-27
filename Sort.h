@@ -1,6 +1,7 @@
 #if !defined (SORT_H)
 #define SORT_H
 
+
 template < class T >
 class Sort
 {
@@ -35,68 +36,56 @@ T** Sort<T>::quickSort(T** items, int num_items, int (*compare) (T* one, T* two)
    //DO THIS
    //create a new array that will be sorted and returned
    //this is in case the original, unsorted array is also needed
-
-
-
-
-
-
-
-
-
+   
+   T** array = new T*[num_items];
+   for (int x = 0; x < num_items; x++)
+   {
+	   array[x]= items[x];
+   }
+	_quickSort(array, 0, num_items-1, compare);
+	return array;
 
 }
 
 template < class T >
-void Sort<T>::_quickSort(T** items, int first, int last, int (*compare) (T* one, T* two))
+void Sort<T>::_quickSort(T** array, int first, int last, int (*compare) (T* one, T* two))
 {
    int pivotIndex;
-
    //DO THIS
    //make the necessary partition and recursive calls for quick sort
    if (first < last)
    {
-
-
-
-
-
-
-
-
-
-
-
+		pivotIndex = partition(array, first, last, compare);	
+		_quickSort(array, first, (pivotIndex - 1), compare);
+		_quickSort(array,(pivotIndex + 1), last, compare);
    }  
 }  
 
 template < class T >
-int Sort<T>::partition(T** items, int first, int last, int (*compare) (T* one, T* two))
+int Sort<T>::partition(T** array, int first, int last, int (*compare) (T* one, T* two))
 {
     //DO THIS
    //complete the partition method (Lomuto partition)
-
    //temp is used to swap elements in the array
    T* temp; 
-
+   
    //initially, choosePivot does nothing           
-   choosePivot(items, first, last); 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   choosePivot(array, first, last); 
+   int s1= first-1;
+   for (int x = first; x <= last; x++)
+   {
+	  if ((*compare)(array[first], array[x]) >= 0)
+	  {
+		  s1++;
+		  temp = array[x];
+		  array[x] = array[s1];
+		  array[s1] = temp;
+	  }
+   }
+	temp = array[s1];
+	array[s1] = array[first];
+	array[first] = array[s1];
+    return s1;
      
 }
 
@@ -106,13 +95,13 @@ void Sort<T>::choosePivot(T** items, int first, int last)
    //DO THIS
    //find a better item to be the partition than simply using the item in the first index
    //you will need to swap
-
-
-
-
-
-
-
+   
+   
+   T* temp; 
+   temp = items[first + ((last - first)/2)];
+   items[first + ((last - first)/2)] = items [first];
+   items [first]= temp;
+   
 }
 
 //no work below this point
